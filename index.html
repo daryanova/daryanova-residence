@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Daryanova Residence</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 16px;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "IRANSans", sans-serif;
+      background: radial-gradient(circle at top, #f7e8c2 0%, #020617 60%);
+      color: #e5e7eb;
+      direction: rtl;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .wrapper {
+      max-width: 600px;
+      width: 100%;
+    }
+    .card {
+      background: rgba(15, 23, 42, 0.9);
+      backdrop-filter: blur(14px);
+      border-radius: 22px;
+      padding: 24px 22px;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    }
+    .logo-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      margin-bottom: 18px;
+    }
+    .logo-box img {
+      width: 120px;
+      height: auto;
+      margin-bottom: 8px;
+    }
+    .brand-main {
+      letter-spacing: 0.14em;
+      font-size: 20px;
+      font-weight: 600;
+      color: #facc6b;
+    }
+    .brand-sub {
+      letter-spacing: 0.26em;
+      font-size: 11px;
+      color: #9ca3af;
+      margin-top: 2px;
+    }
+    .title-fa {
+      margin-top: 12px;
+      font-size: 16px;
+      font-weight: 500;
+      color: #e5e7eb;
+    }
+    .description {
+      margin-top: 12px;
+      font-size: 13px;
+      line-height: 1.9;
+      color: #d1d5db;
+    }
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+      font-size: 12px;
+    }
+    .tag {
+      padding: 4px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.6);
+      color: #e5e7eb;
+      background: linear-gradient(135deg, rgba(55,65,81,0.9), rgba(30,64,175,0.5));
+    }
+    .actions {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .btn {
+      width: 100%;
+      border: none;
+      border-radius: 999px;
+      padding: 12px 16px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.08s ease, box-shadow 0.12s ease;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #facc6b, #a16207);
+      color: #111827;
+      box-shadow: 0 10px 30px rgba(250,204,21,0.45);
+    }
+    .btn-primary:active {
+      transform: scale(0.97);
+      box-shadow: 0 5px 14px rgba(250,204,21,0.35);
+    }
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid rgba(148,163,184,0.7);
+      color: #e5e7eb;
+    }
+    .btn-secondary:active {
+      transform: scale(0.97);
+      background: rgba(30,41,59,0.9);
+    }
+    .footer {
+      margin-top: 16px;
+      font-size: 11px;
+      text-align: center;
+      color: #9ca3af;
+      line-height: 1.6;
+    }
+    .footer span { color: #facc6b; }
+  </style>
+</head>
+<body>
+<div class="wrapper">
+  <div class="card">
+    <div class="logo-box">
+      <img src="6DB9962D-4631-4176-8034-90B6BA64079D.jpeg" alt="Daryanova Logo">
+      <div class="brand-main">DARYANOVA</div>
+      <div class="brand-sub">RESIDENCE</div>
+      <div class="title-fa">اقامتگاه لوکس داریانووا</div>
+    </div>
+    <div class="description">
+      اقامتگاهی آرام و مدرن برای لحظه‌های به یادماندنی شما. واحدهای مجهز، تمیز و طراحی شده با متریال باکیفیت. مناسب سفرهای خانوادگی، کاری یا اوقات فراغت.
+    </div>
+    <div class="tags">
+      <div class="tag">واحدهای مبله</div>
+      <div class="tag">آرامش و سکوت</div>
+      <div class="tag">دسترسی آسان</div>
+      <div class="tag">امکانات کامل</div>
+    </div>
+    <div class="actions">
+      <button class="btn btn-primary" onclick="location.href='reserve.html'">رزرو آنلاین واحد 📲</button>
+      <button class="btn btn-secondary" onclick="location.href='https://wa.me/989382382863'">تماس با مدیریت در واتساپ</button>
+    </div>
+    <div class="footer">
+      برای دریافت بهترین تجربه اقامت، رزرو شما پس از ارتباط و هماهنگی در واتساپ نهایی می‌شود.<br>
+      <span>Daryanova Residence</span>
+    </div>
+  </div>
+</div>
+</body>
+</html>
