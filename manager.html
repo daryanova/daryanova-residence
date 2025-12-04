@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>پنل مدیریت واحدها - Daryanova Residence</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'IRANSans', sans-serif;
+      background: #020617;
+      color: #e5e7eb;
+      margin: 0;
+      padding: 16px;
+      direction: rtl;
+    }
+    h1 {
+      text-align: center;
+      margin-top: 0;
+      margin-bottom: 6px;
+      font-size: 20px;
+      color: #facc6b;
+    }
+    .subtitle {
+      text-align: center;
+      font-size: 12px;
+      color: #9ca3af;
+      margin-bottom: 16px;
+    }
+    .top-actions {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .small-btn {
+      border: none;
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 12px;
+      cursor: pointer;
+      color: #111827;
+      background: linear-gradient(135deg,#facc6b,#a16207);
+      box-shadow: 0 4px 12px rgba(250,204,21,0.4);
+    }
+    .small-btn.danger {
+      background: rgba(220,38,38,0.9);
+      color: #fef2f2;
+      box-shadow: 0 4px 12px rgba(220,38,38,0.5);
+    }
+    .rooms {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 12px;
+    }
+    .room-card {
+      background: rgba(15,23,42,0.95);
+      border-radius: 16px;
+      padding: 12px;
+      border: 1px solid rgba(55,65,81,0.7);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .room-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #facc6b;
+    }
+    .room-info {
+      font-size: 11px;
+      color: #9ca3af;
+    }
+    .status {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #111827;
+    }
+    .status.available {
+      background: #4ade80;
+      color: #065f46;
+    }
+    .status.booked {
+      background: #fca5a5;
+      color: #7f1d1d;
+    }
+    .status.cleaning {
+      background: #fde68a;
+      color: #92400e;
+    }
+    .btn-toggle {
+      border: none;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 12px;
+      cursor: pointer;
+      color: #111827;
+      background: linear-gradient(135deg,#facc6b,#a16207);
+      box-shadow: 0 4px 12px rgba(250,204,21,0.3);
+    }
+    .footer-note {
+      margin-top: 14px;
+      font-size: 11px;
+      color: #9ca3af;
+      text-align: center;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <h1>پنل مدیریت واحدها</h1>
+  <div class="subtitle">اینجا می‌توانید وضعیت هر واحد را تنظیم کنید (خالی، رزرو شده، نظافت)</div>
+  <div class="top-actions">
+    <button id="setAllAvailable" class="small-btn">همه را خالی کن ✅</button>
+    <button id="resetStorage" class="small-btn danger">حذف همه وضعیت‌ها 🔄</button>
+  </div>
+  <div id="roomsContainer" class="rooms"></div>
+  <div class="footer-note">
+    وضعیت‌ها فقط در مرورگر شما ذخیره می‌شود. برای نمایش عمومی در سایت، لازم است فایل <code>rooms.html</code> را به‌روزرسانی کنید.
+  </div>
+  <script>
+    // define rooms list with information
+    const rooms = [
+      { id: 1, name: "واحد ۱", info: "یک‌خوابه، طبقه ۱" },
+      { id: 2, name: "واحد ۲", info: "یک‌خوابه، طبقه ۱" },
+      { id: 3, name: "واحد ۳", info: "دوخوابه، طبقه ۱" },
+      { id: 4, name: "واحد ۴", info: "یک‌خوابه، طبقه ۲" },
+      { id: 5, name: "واحد ۵", info: "یک‌خوابه، طبقه ۲" },
+      { id: 6, name: "واحد ۶", info: "دوخوابه، طبقه ۲" },
+      { id: 7, name: "واحد ۷", info: "یک‌خوابه، طبقه ۳" },
+      { id: 8, name: "واحد ۸", info: "یک‌خوابه، طبقه ۳" },
+      { id: 9, name: "واحد ۹", info: "دوخوابه، طبقه ۳" },
+      { id: 10, name: "واحد ۱۰", info: "سوئیت، طبقه ۴" },
+      { id: 11, name: "واحد ۱۱", info: "سوئیت، طبقه ۴" },
+      { id: 12, name: "واحد ۱۲", info: "VIP" }
+    ];
+    const STORAGE_KEY = "daryanova_rooms_status_v1";
+    function loadStatuses() {
+      try {
+        const data = localStorage.getItem(STORAGE_KEY);
+        return data ? JSON.parse(data) : {};
+      } catch (e) {
+        return {};
+      }
+    }
+    function saveStatuses(obj) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(obj));
+    }
+    function nextStatus(current) {
+      if (current === "available") return "booked";
+      if (current === "booked") return "cleaning";
+      return "available";
+    }
+    function render() {
+      const statuses = loadStatuses();
+      const container = document.getElementById("roomsContainer");
+      container.innerHTML = "";
+      rooms.forEach(room => {
+        const status = statuses[room.id] || "available";
+        const card = document.createElement("div");
+        card.className = "room-card";
+        const title = document.createElement("div");
+        title.className = "room-title";
+        title.textContent = room.name;
+        const info = document.createElement("div");
+        info.className = "room-info";
+        info.textContent = room.info;
+        const statusEl = document.createElement("div");
+        statusEl.className = "status " + status;
+   if (status === "available") {
+        statusEl.textContent = "خالی ✅";
+      } else if (status === "booked") {
+        statusEl.textContent = "رزرو شده ❌";
+      } else {
+        statusEl.textContent = "نظافت 🧹";
+      }
+        const btn = document.createElement("button");
+        btn.className = "btn-toggle";
+        btn.textContent = "تغییر وضعیت";
+        btn.onclick = () => {
+          const current = statuses[room.id] || "available";
+          const next = nextStatus(current);
+          statuses[room.id] = next;
+          saveStatuses(statuses);
+          render();
+        };
+        card.appendChild(title);
+        card.appendChild(info);
+        card.appendChild(statusEl);
+        card.appendChild(btn);
+        container.appendChild(card);
+      });
+    }
+    document.getElementById("setAllAvailable").onclick = () => {
+      const statuses = {};
+      rooms.forEach(r => statuses[r.id] = "available");
+      saveStatuses(statuses);
+      render();
+    };
+    document.getElementById("resetStorage").onclick = () => {
+      if (confirm("آیا همه وضعیت‌ها حذف شوند؟")) {
+        localStorage.removeItem(STORAGE_KEY);
+        render();
+      }
+    };
+    render();
+  </script>
+</body>
+</html>
