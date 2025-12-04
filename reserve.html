@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>رزرو Daryanova Residence</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 16px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "IRANSans", sans-serif;
+    background: #020617;
+    color: #e5e7eb;
+    direction: rtl;
+  }
+  .wrapper {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .card {
+    background: rgba(15,23,42,0.95);
+    border-radius: 20px;
+    padding: 20px 18px;
+    border: 1px solid rgba(148,163,184,0.35);
+    box-shadow: 0 12px 35px rgba(0,0,0,0.5);
+  }
+  h1 {
+    font-size: 20px;
+    margin: 0 0 6px;
+    text-align: center;
+    color: #facc6b;
+  }
+  .subtitle {
+    text-align: center;
+    font-size: 12px;
+    margin-bottom: 20px;
+    color: #9ca3af;
+  }
+  label {
+    font-size: 13px;
+    margin-bottom: 4px;
+    display: block;
+  }
+  input, select, textarea {
+    width: 100%;
+    padding: 8px 10px;
+    border-radius: 10px;
+    border: 1px solid #374151;
+    background: #1f2937;
+    color: #e5e7eb;
+    margin-bottom: 10px;
+    font-size: 13px;
+    outline: none;
+  }
+  input:focus, select:focus, textarea:focus {
+    border-color: #facc6b;
+  }
+  textarea { min-height: 70px; resize: vertical; }
+  .row { display: flex; gap: 10px; }
+  .row > div { flex: 1; }
+  button {
+    width: 100%;
+    padding: 10px;
+    border-radius: 999px;
+    border: none;
+    background: linear-gradient(135deg, #facc6b, #a16207);
+    color: #111827;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 4px;
+    box-shadow: 0 8px 22px rgba(250,204,21,0.4);
+  }
+  button:active { transform: scale(0.98); }
+  .note {
+    margin-top: 10px;
+    font-size: 10px;
+    color: #9ca3af;
+    text-align: center;
+    line-height: 1.7;
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div class="card">
+    <h1>فرم درخواست رزرو</h1>
+    <div class="subtitle">لطفاً اطلاعات خود را وارد کنید. پس از ارسال، پیام شما به واتساپ مدیریت ارسال می‌شود.</div>
+    <form id="reserveForm">
+      <label for="fullName">نام و نام خانوادگی</label>
+      <input id="fullName" type="text" placeholder="مثلاً علی رضایی" required>
+      <label for="phone">شماره تماس</label>
+      <input id="phone" type="tel" placeholder="مثلاً 09120000000" required>
+      <div class="row">
+        <div>
+          <label for="checkin">تاریخ ورود</label>
+          <input id="checkin" type="text" placeholder="مثلاً 1404/01/20" required>
+        </div>
+        <div>
+          <label for="checkout">تاریخ خروج</label>
+          <input id="checkout" type="text" placeholder="مثلاً 1404/01/23" required>
+        </div>
+      </div>
+      <div class="row">
+        <div>
+          <label for="guests">تعداد نفرات</label>
+          <input id="guests" type="number" min="1" placeholder="مثلاً 3" required>
+        </div>
+        <div>
+          <label for="unit">نوع واحد</label>
+          <select id="unit">
+            <option value="">فرقی ندارد</option>
+            <option value="یک‌خوابه">یک‌خوابه</option>
+            <option value="دوخوابه">دوخوابه</option>
+            <option value="سوئیت">سوئیت VIP</option>
+          </select>
+        </div>
+      </div>
+      <label for="note">توضیحات (اختیاری)</label>
+      <textarea id="note" placeholder="مثلاً تمایل به طبقه پایین / همراه با کودک"></textarea>
+      <button type="submit">ارسال درخواست رزرو 📲</button>
+      <div class="note">
+        پس از ارسال، واتساپ باز می‌شود و پیام شما به مدیریت ارسال خواهد شد. رزرو شما تنها پس از تأیید نهایی خواهد بود.
+      </div>
+    </form>
+  </div>
+</div>
+<script>
+  const form = document.getElementById('reserveForm');
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const name = document.getElementById('fullName').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const checkin = document.getElementById('checkin').value.trim();
+    const checkout = document.getElementById('checkout').value.trim();
+    const guests = document.getElementById('guests').value.trim();
+    const unit = document.getElementById('unit').value;
+    const note = document.getElementById('note').value.trim();
+    let text = 'درخواست رزرو جدید:%0A';
+    text += '👤 نام: ' + name + '%0A';
+    text += '📱 شماره: ' + phone + '%0A';
+    text += '📅 ورود: ' + checkin + '%0A';
+    text += '📅 خروج: ' + checkout + '%0A';
+    text += '👥 تعداد نفرات: ' + guests + '%0A';
+    if (unit) { text += '🏠 نوع واحد: ' + unit + '%0A'; }
+    if (note) { text += '%0A📝 توضیحات: ' + encodeURIComponent(note) + '%0A'; }
+    const waNumber = '989382382863';
+    const url = 'https://wa.me/' + waNumber + '?text=' + text;
+    window.location.href = url;
+  });
+</script>
+</body>
+</html>
